@@ -9,8 +9,8 @@ const puzzles = [
     type: "location",
     hint: "It's a popular waterfront spot in the city.",
     targetLocation: {
-      latitude: 31.2420, 
-      longitude: 34.8122, 
+      latitude: 31.2489,
+      longitude: 34.7700, 
       name: "Waterfront Park"
     }
   },
@@ -28,8 +28,8 @@ const puzzles = [
     description: "The message leads you to a place where knowledge is kept. Find the building with stone lions guarding its entrance.",
     type: "location",
     targetLocation: {
-      latitude: 0, // Replace with actual coordinates
-      longitude: 0, // Replace with actual coordinates
+      latitude: 31.2420, 
+      longitude: 34.8122, 
       name: "Public Library"
     }
   },

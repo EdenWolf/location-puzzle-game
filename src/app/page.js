@@ -2,10 +2,92 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import puzzles from '@/data/puzzles';
-import LocationDetector from '@/components/LocationDetector';
-import Puzzle from '@/components/Puzzle';
-import GameProgress from '@/components/GameProgress';
+import styled from 'styled-components';
+// Fix imports with correct paths
+import puzzles from '../data/puzzles';
+import LocationDetector from '../components/LocationDetector';
+import Puzzle from '../components/Puzzle';
+import GameProgress from '../components/GameProgress';
+
+// Styled Components
+const PageContainer = styled.div`
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 1rem;
+  @media (min-width: 640px) {
+    padding: 1.5rem;
+  }
+`;
+
+const Header = styled.header`
+  max-width: 42rem;
+  margin: 0 auto 2rem auto;
+`;
+
+const PageTitle = styled.h1`
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+`;
+
+const PageSubtitle = styled.p`
+  color: #6b7280;
+  text-align: center;
+`;
+
+const MainContent = styled.main`
+  max-width: 42rem;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+`;
+
+const CompletionMessage = styled.div`
+  text-align: center;
+  padding: 3rem 0;
+`;
+
+const CompletionTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+`;
+
+const CompletionInfo = styled.p`
+  margin-bottom: 1.5rem;
+`;
+
+const CompletionDate = styled.p`
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+`;
+
+const ResetButton = styled.button`
+  padding: 0.75rem 1.5rem;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: #1d4ed8;
+  }
+`;
+
+const Footer = styled.footer`
+  max-width: 42rem;
+  margin: 2rem auto 0 auto;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+`;
 
 export default function Home() {
   const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(0);
@@ -69,27 +151,24 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-      <header className="max-w-2xl mx-auto mb-8">
-        <h1 className="text-3xl font-bold text-center mb-2">Location Puzzle Game</h1>
-        <p className="text-gray-600 text-center">Solve puzzles by finding real-world locations!</p>
-      </header>
+    <PageContainer>
+      <Header>
+        <PageTitle>Location Puzzle Game</PageTitle>
+        <PageSubtitle>Solve puzzles by finding real-world locations!</PageSubtitle>
+      </Header>
       
-      <main className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+      <MainContent>
         {gameComplete ? (
-          <div className="text-center py-12">
-            <h2 className="text-2xl font-bold mb-4">Congratulations!</h2>
-            <p className="mb-6">You&apos;ve completed all the puzzles!</p>
-            <p className="text-sm text-gray-600 mb-8">
+          <CompletionMessage>
+            <CompletionTitle>Congratulations!</CompletionTitle>
+            <CompletionInfo>You&apos;ve completed all the puzzles!</CompletionInfo>
+            <CompletionDate>
               Completed on: {lastCompletedTime?.toLocaleDateString()} at {lastCompletedTime?.toLocaleTimeString()}
-            </p>
-            <button
-              onClick={resetGame}
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
-            >
+            </CompletionDate>
+            <ResetButton onClick={resetGame}>
               Play Again
-            </button>
-          </div>
+            </ResetButton>
+          </CompletionMessage>
         ) : (
           <>
             <GameProgress 
@@ -111,11 +190,11 @@ export default function Home() {
             )}
           </>
         )}
-      </main>
+      </MainContent>
       
-      <footer className="max-w-2xl mx-auto mt-8 text-center text-gray-500 text-sm">
+      <Footer>
         <p>Created with Next.js</p>
-      </footer>
-    </div>
+      </Footer>
+    </PageContainer>
   );
 }
