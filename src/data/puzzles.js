@@ -68,6 +68,41 @@ const puzzles = [
       { type: "text", content: "גראלט, אני שונא להסכים עם תאנוס, אבל אם נרצה להביס אותו אנחנו צריכים שתהיה בשיא כוחך. כמו שרואים, אני מאמין שאסור להגיד לא לארוחה. בתאבון! ת׳ור." },
     ]
   },
+  {
+    id: 7,
+    slug: "mimir",
+    title: "האם זה הסוף?",
+    type: "narrative",
+    elements: [
+      { type: "image", src: "/location-puzzle-game/images/mimir.avif", alt: "מימיר" },
+      { type: "text", content: "גראלט, הגיע הזמן לקרב האחרון. למרות כל האימונים שלך זה לא הולך להיות קרב חרבות, אלא קרב מוחות. כדי לנצח את תאנוס עליך לחזור אל ההיסטוריה- אל הדפים בהם כתוב העבר שלך, כי רק ממנו נוכל ללמוד על העתיד לבוא. מימיר." },
+    ]
+  },
+  {
+    id: 8,
+    slug: "ciri",
+    title: "האם איחרנו את המועד?",
+    type: "location",
+    elements: [
+      { type: "image", src: "/location-puzzle-game/images/ciri.jpeg", alt: "סירי" },
+      { type: "text", content: "גראלט, אני חוששת שכבר מאוחר מידי. תאנוס כבר בדרך אל הגביע! רוץ, רוץ מהר ככל שתוכל- אתה יודע איפה גביע הזהב נמצא. סירי." },
+    ],
+    targetLocation: {
+      latitude: 31.2592,
+      longitude: 34.7970,
+      name: "גביע הזהב"
+    }
+  },
+  {
+    id: 9,
+    slug: "win",
+    title: "ניצחון!",
+    type: "narrative",
+    elements: [
+      { type: "image", src: "/location-puzzle-game/images/win.png", alt: "ניצחון" },
+      { type: "text", content: "גראלט, ניצחת כנגד כל הסיכויים! כל הכבוד! אנחנו גאים בך!" },
+    ]
+  },
 ];
 
 export default puzzles;
