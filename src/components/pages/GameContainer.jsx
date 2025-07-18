@@ -109,8 +109,8 @@ export default function GameContainer({ forcedSlug }) {
         ) : (
           <>
             <GameProgress 
-              currentPuzzleIndex={currentPuzzleIndex} 
-              totalPuzzles={puzzles.length - 1} // Subtract 1 for completion "puzzle" 
+              currentPuzzleIndex={currentPuzzleIndex + 1} 
+              totalPuzzles={puzzles.length} 
             />
             
             <Puzzle 

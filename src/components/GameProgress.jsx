@@ -8,7 +8,7 @@ const GameProgress = ({ currentPuzzleIndex, totalPuzzles }) => {
   return (
     <ProgressContainer>
       <InfoBar>
-        <span>חידה {currentPuzzleIndex + 1} מתוך {totalPuzzles}</span>
+        <span>שלב {currentPuzzleIndex} מתוך {totalPuzzles}</span>
         <span>{completionPercentage}% הושלם</span>
       </InfoBar>
       

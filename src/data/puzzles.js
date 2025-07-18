@@ -44,23 +44,20 @@ const puzzles = [
     title: "נראה שאתה זקוק לאימון...",
     type: "narrative",
     elements: [
-      { type: "text", content: "גראלט, עכשיו כשהתחמשת אתה אולי חושב שאתה מוכן לקרב- אך אין זה נכון. כל לוחם דגול יודע שעליו להתאמן. אם אין לך חרב מתאימה לאימון, קח שלט. ג׳ין סאקאי." },
       { type: "image", src: "/location-puzzle-game/images/jin-sakai.jpg", alt: "ג׳ין סאקאי" },
+      { type: "text", content: "גראלט, עכשיו כשהתחמשת אתה אולי חושב שאתה מוכן לקרב- אך אין זה נכון. כל לוחם דגול יודע שעליו להתאמן. אם אין לך חרב מתאימה לאימון, קח שלט. ג׳ין סאקאי." },
     ]
   },
   {
     id: 5,
-    slug: "completion", // URL slug for completion page
-    title: "המסע הושלם",
-    type: "completion",
+    slug: "training",
+    title: "קשה באימונים- קל בקרב",
+    type: "narrative",
     elements: [
-      { type: "text", content: "ברכות! סיימת את כל החידות וגילית את הסיפור הנסתר של העיר." },
-      { type: "image", src: "/location-puzzle-game/images/completion.jpg", alt: "תעודת סיום" },
-      { type: "text", content: "המסע שלך דרך ההיסטוריה והתעלומה הסתיים." },
-      { type: "button", label: "התחל מחדש", action: "reset" }
+      { type: "image", src: "/location-puzzle-game/images/training.png", alt: "חתולים מתאמנים" },
+      { type: "text", content: "הגיע הזמן לקצת מציאות מפוצלת" },
     ]
-  }
-  // Add more puzzles as needed
+  },
 ];
 
 export default puzzles;
