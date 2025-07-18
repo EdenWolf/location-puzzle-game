@@ -1,6 +1,58 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
+const LocationContainer = styled.div`
+  padding: 1rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const LocationTitle = styled.h3`
+  font-size: 1.125rem;
+  font-weight: 500;
+`;
+
+const ErrorMessage = styled.div`
+  color: #ef4444;
+  margin-top: 0.5rem;
+`;
+
+const LocationInfo = styled.div`
+  margin-top: 0.5rem;
+`;
+
+const LocationCoords = styled.p`
+  font-size: 0.875rem;
+  color: #4b5563;
+`;
+
+const DistanceInfo = styled.p`
+  margin-top: 0.5rem;
+`;
+
+const LoadingMessage = styled.div`
+  color: #f59e0b;
+  margin-top: 0.5rem;
+`;
+
+const ProgressContainer = styled.div`
+  margin-top: 0.75rem;
+`;
+
+const ProgressBackground = styled.div`
+  height: 0.75rem;
+  width: 100%;
+  border-radius: 9999px;
+  background-color: ${props => props.watching ? '#bbf7d0' : '#e5e7eb'};
+`;
+
+const ProgressBar = styled.div`
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: ${props => props.isAtLocation ? '#22c55e' : '#3b82f6'};
+  width: ${props => props.progressWidth};
+`;
 
 const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -128,10 +180,10 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
       )}
       
       <ProgressContainer>
-        <ProgressBackground $watching={watching}>
+        <ProgressBackground watching={watching}>
           <ProgressBar 
-            $isAtLocation={distance !== null && distance <= 50}
-            $progressWidth={getProgressWidth()}
+            isAtLocation={distance !== null && distance <= 50}
+            progressWidth={getProgressWidth()}
           />
         </ProgressBackground>
       </ProgressContainer>
@@ -140,56 +192,3 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
 };
 
 export default LocationDetector;
-
-const LocationContainer = styled.div`
-  padding: 1rem;
-  background-color: #f3f4f6;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-`;
-
-const LocationTitle = styled.h3`
-  font-size: 1.125rem;
-  font-weight: 500;
-`;
-
-const ErrorMessage = styled.div`
-  color: #ef4444;
-  margin-top: 0.5rem;
-`;
-
-const LocationInfo = styled.div`
-  margin-top: 0.5rem;
-`;
-
-const LocationCoords = styled.p`
-  font-size: 0.875rem;
-  color: #4b5563;
-`;
-
-const DistanceInfo = styled.p`
-  margin-top: 0.5rem;
-`;
-
-const LoadingMessage = styled.div`
-  color: #f59e0b;
-  margin-top: 0.5rem;
-`;
-
-const ProgressContainer = styled.div`
-  margin-top: 0.75rem;
-`;
-
-const ProgressBackground = styled.div`
-  height: 0.75rem;
-  width: 100%;
-  border-radius: 9999px;
-  background-color: ${props => props.watching ? '#bbf7d0' : '#e5e7eb'};
-`;
-
-const ProgressBar = styled.div`
-  height: 0.75rem;
-  border-radius: 9999px;
-  background-color: ${props => props.isAtLocation ? '#22c55e' : '#3b82f6'};
-  width: ${props => props.progressWidth};
-`;
