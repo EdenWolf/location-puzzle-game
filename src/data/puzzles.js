@@ -62,10 +62,11 @@ const puzzles = [
     id: 6,
     slug: "food",
     title: "בדבר אחד תאנוס צודק...",
-    type: "narrative",
+    type: "manual",
     elements: [
       { type: "image", src: "/location-puzzle-game/images/thor.webp", alt: "תור" },
       { type: "text", content: "גראלט, אני שונא להסכים עם תאנוס, אבל אם נרצה להביס אותו אנחנו צריכים שתהיה בשיא כוחך. כמו שרואים, אני מאמין שאסור להגיד לא לארוחה. בתאבון! ת׳ור." },
+      { type: "button", action: "next", label: "סיימתי לאכול" }
     ]
   },
   {
