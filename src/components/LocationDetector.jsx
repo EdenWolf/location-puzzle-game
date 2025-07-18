@@ -284,31 +284,31 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
 
   return (
     <LocationContainer>
-      <LocationTitle>Location Status</LocationTitle>
+      <LocationTitle>מצב מיקום</LocationTitle>
       
       {error && (
         <ErrorMessage>
-          {error}
+          שגיאה בזיהוי מיקום: {error}
         </ErrorMessage>
       )}
       
       {currentLocation ? (
         <LocationInfo>
-          <p>Your current location:</p>
+          <p>המיקום הנוכחי שלך:</p>
           <LocationCoords>
-            Latitude: {currentLocation.latitude.toFixed(6)}, 
-            Longitude: {currentLocation.longitude.toFixed(6)}
+            קו רוחב: {currentLocation.latitude.toFixed(6)}, 
+            קו אורך: {currentLocation.longitude.toFixed(6)}
           </LocationCoords>
           
           {targetLocation && distance !== null && (
             <DistanceInfo>
-              Distance to target: <strong>{formatDistance(distance)}</strong>
+              מרחק ליעד: <strong>{formatDistance(distance)}</strong>
             </DistanceInfo>
           )}
         </LocationInfo>
       ) : (
         <LoadingMessage>
-          Getting your location...
+          מאתר את המיקום שלך...
         </LoadingMessage>
       )}
       
@@ -322,7 +322,7 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
       </ProgressContainer>
       
       <ActionButton onClick={recalculateLocation}>
-        Recalculate Location
+        חשב מיקום מחדש
       </ActionButton>
     </LocationContainer>
   );

@@ -17,7 +17,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="he" dir="rtl">
       <body className={roboto.className}>
         <StyledComponentsRegistry>
           <ThemeProvider>{children}</ThemeProvider>

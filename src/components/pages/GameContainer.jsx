@@ -77,22 +77,22 @@ export default function GameContainer() {
   return (
     <PageContainer>
       <Header>
-        <PageTitle>Location Puzzle Game</PageTitle>
-        <PageSubtitle>Solve puzzles by finding real-world locations!</PageSubtitle>
+        <PageTitle>משחק חידות מבוסס מיקום</PageTitle>
+        <PageSubtitle>פתרו חידות על ידי מציאת מיקומים בעולם האמיתי!</PageSubtitle>
       </Header>
       
       <MainContent>
         {gameComplete ? (
           <CompletionMessage>
-            <CompletionTitle>Congratulations!</CompletionTitle>
-            <CompletionInfo>You&apos;ve completed all the puzzles!</CompletionInfo>
+            <CompletionTitle>ברכות!</CompletionTitle>
+            <CompletionInfo>סיימת את כל החידות!</CompletionInfo>
             {completionTime && (
               <CompletionDate>
-                Completed on: {completionTime.toLocaleDateString()} at {completionTime.toLocaleTimeString()}
+                הושלם בתאריך: {completionTime.toLocaleDateString('he-IL')} בשעה {completionTime.toLocaleTimeString('he-IL')}
               </CompletionDate>
             )}
             <ResetButton onClick={resetGame}>
-              Play Again
+              שחק שוב
             </ResetButton>
           </CompletionMessage>
         ) : (
@@ -119,7 +119,7 @@ export default function GameContainer() {
       </MainContent>
       
       <Footer>
-        <p>Created with Next.js and styled-components</p>
+        <p>נבנה באמצעות Next.js ו-styled-components</p>
       </Footer>
     </PageContainer>
   );
