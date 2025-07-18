@@ -2,6 +2,7 @@
   "name": "location-puzzle-game",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://edenwolf.github.io/location-puzzle-game/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -4,8 +4,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Configure basePath if your GitHub Pages site is deployed to a subfolder
-  // basePath: '/location-puzzle-game',
+  // Base path configured for GitHub Pages
+  basePath: '/location-puzzle-game',
+  // Setting asset prefix to match the GitHub Pages URL structure
+  assetPrefix: '/location-puzzle-game',
 };
 
 export default nextConfig;
