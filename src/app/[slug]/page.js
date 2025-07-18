@@ -10,16 +10,18 @@ export function generateStaticParams() {
 
 // Server component with metadata
 export async function generateMetadata({ params }) {
+  console.log('!!! params', await params);
   const { slug } = await params;
   const puzzle = puzzles.find(p => p.slug === slug);
   
   return {
-    title: puzzle ? `${puzzle.title} - Location Puzzle Game` : 'Puzzle Not Found',
+    title: puzzle ? `${puzzle.title}` : 'Puzzle Not Found',
   };
 }
 
 // This is the server component - we just pass the slug to the client component
 export default async function PuzzlePage({ params }) {
   const { slug } = await params;
+  console.log('!!! slug', slug);
   return <PuzzleClient slug={slug} />;
 }

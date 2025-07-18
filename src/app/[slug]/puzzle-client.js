@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import puzzles from '../../data/puzzles';
 import GameContainer from '../../components/pages/GameContainer';
@@ -9,6 +9,31 @@ import GameContainer from '../../components/pages/GameContainer';
 // This is the client component that handles the UI
 export default function PuzzleClient({ slug }) {
   const router = useRouter();
+  const params = useParams();
+  const [currentPuzzle, setCurrentPuzzle] = useState(null);
+  const [key, setKey] = useState(Date.now()); // Cache-busting key
+  
+  // Effect to handle puzzle navigation and force refresh
+  useEffect(() => {
+    // Find the current puzzle data
+    const puzzle = puzzles.find(p => p.slug === slug);
+    if (puzzle) {
+      setCurrentPuzzle(puzzle);
+      // Force a re-render with a new key when slug changes
+      setKey(Date.now());
+      
+      // Force a hard refresh if we're on GitHub Pages to avoid cache issues
+      if (typeof window !== 'undefined' && 
+          window.location.hostname.includes('github.io') && 
+          localStorage.getItem('lastSlug') !== slug) {
+        localStorage.setItem('lastSlug', slug);
+        // Use a timeout to ensure the state updates first
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      }
+    }
+  }, [slug]);
   
   // Validate if the slug exists in puzzles
   const puzzleExists = puzzles.some(puzzle => puzzle.slug === slug);
@@ -28,8 +53,8 @@ export default function PuzzleClient({ slug }) {
     );
   }
   
-  // Render the GameContainer component which will handle the puzzle based on the URL slug
-  return <GameContainer />;
+  // Render the GameContainer component with a key to force re-render on puzzle change
+  return <GameContainer key={key} />;
 }
 
 const ErrorContainer = styled.div`
