@@ -31,7 +31,9 @@ const Puzzle = ({ puzzle, onSolve }) => {
 
   // Handle button actions
   const handleButtonAction = (action) => {
+    console.log('!!! action:', action);
     if (action === 'next' && onSolve) {
+      console.log('!!! next button clicked');
       onSolve();
     } else if (action === 'reset') {
       router.push(`/${puzzles[0].slug}`);

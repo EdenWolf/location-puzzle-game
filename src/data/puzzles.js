@@ -21,24 +21,21 @@ const puzzles = [
     type: "narrative", 
     elements: [
       { type: "image", src: "/location-puzzle-game/images/cat-eggs.png", alt: "חתולים" },
-      { type: "button", label: "המשך במסע", action: "next" }
     ]
   },
   {
     id: 3,
-    slug: "library", // URL slug related to solution
-    title: "עקוב אחר הנתיב",
+    slug: "thomas",
+    title: "אין לנו זמן לבזבז!",
     type: "location",
     elements: [
-      { type: "text", content: "המסר מוביל אותך למקום בו שומרים את הידע." },
-      { type: "text", content: "מצא את הבניין שבו אריות אבן שומרים על הכניסה." },
-      { type: "hint", content: "במקום זה מאוחסנים אלפי ספרים וחוכמה עתיקה." },
-      { type: "text", content: "הספרייה העירונית ניצבת מעל מאה שנים בלב העיר." }
+      { type: "image", src: "/location-puzzle-game/images/tommy-shelby.webp", alt: "תומאס" },
+      { type: "text", content: "גראלט, אני שמח שהיה לך טעים - אתה תצטרך את האנרגיות. קריפה ניסתה לעזור לנו לאסוף תחמושת אבל היא לא מצליחה להגיע אל הרימונים. סטנלי הסתכל וראה שיש שם חפץ חשוד. אתה חייב לבדוק את זה במהירות האפשרית! ת. שלבי." },
     ],
     targetLocation: {
-      latitude: 31.2420, 
-      longitude: 34.8122, 
-      name: "הספרייה העירונית"
+      latitude: 31.2419,
+      longitude: 34.8121, 
+      name: "פארק החוף"
     }
   },
   {

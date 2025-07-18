@@ -61,6 +61,7 @@ export default function GameContainer({ forcedSlug }) {
   
   // Handle puzzle solve
   const handlePuzzleSolved = () => {
+    console.log('!!! puzzle solved');
     if (currentPuzzleIndex < puzzles.length - 1) {
       // Navigate to the next puzzle using its slug
       const nextPuzzle = puzzles[currentPuzzleIndex + 1];
@@ -114,7 +115,7 @@ export default function GameContainer({ forcedSlug }) {
             
             <Puzzle 
               puzzle={currentPuzzle} 
-              onSolve={currentPuzzle.type === 'manual' ? handlePuzzleSolved : undefined} 
+              onSolve={currentPuzzle.type === 'manual' ? handlePuzzleSolved : console.log('!!! current puzzle:', currentPuzzle)} 
             />
             
             {currentPuzzle.type === 'location' && (
