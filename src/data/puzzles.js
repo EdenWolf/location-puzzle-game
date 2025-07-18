@@ -9,8 +9,8 @@ const puzzles = [
     type: "location",
     hint: "It's a popular waterfront spot in the city.",
     targetLocation: {
-      latitude: 0, // Replace with actual coordinates
-      longitude: 0, // Replace with actual coordinates
+      latitude: 31.2420, 
+      longitude: 34.8122, 
       name: "Waterfront Park"
     }
   },

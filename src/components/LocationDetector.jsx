@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
 
 const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -86,46 +88,108 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
     };
   }, [targetLocation]); // Restart watching when target location changes
 
+  // Calculate progress bar width based on distance to target
+  const getProgressWidth = () => {
+    if (distance && targetLocation) {
+      const percentage = Math.max(0, Math.min(100, 100 - (distance / 200) * 100));
+      return `${percentage}%`;
+    }
+    return '0%';
+  };
+
   return (
-    <div className="p-4 bg-gray-100 rounded-lg mb-4">
-      <h3 className="text-lg font-medium">Location Status</h3>
+    <LocationContainer>
+      <LocationTitle>Location Status</LocationTitle>
       
       {error && (
-        <div className="text-red-500 mt-2">
+        <ErrorMessage>
           {error}
-        </div>
+        </ErrorMessage>
       )}
       
       {currentLocation ? (
-        <div className="mt-2">
+        <LocationInfo>
           <p>Your current location:</p>
-          <p className="text-sm text-gray-600">
+          <LocationCoords>
             Latitude: {currentLocation.latitude.toFixed(6)}, 
             Longitude: {currentLocation.longitude.toFixed(6)}
-          </p>
+          </LocationCoords>
           
           {targetLocation && distance !== null && (
-            <p className="mt-2">
+            <DistanceInfo>
               Distance to target: <strong>{(distance).toFixed(0)} meters</strong>
-            </p>
+            </DistanceInfo>
           )}
-        </div>
+        </LocationInfo>
       ) : (
-        <div className="text-amber-500 mt-2">
+        <LoadingMessage>
           Getting your location...
-        </div>
+        </LoadingMessage>
       )}
       
-      <div className="mt-3">
-        <div className={`h-3 w-full rounded-full ${watching ? 'bg-green-200' : 'bg-gray-200'}`}>
-          <div 
-            className={`h-3 rounded-full ${distance !== null && distance <= 50 ? 'bg-green-500' : 'bg-blue-500'}`} 
-            style={{ width: distance && targetLocation ? `${Math.max(0, Math.min(100, 100 - (distance / 200) * 100))}%` : '0%' }}
-          ></div>
-        </div>
-      </div>
-    </div>
+      <ProgressContainer>
+        <ProgressBackground $watching={watching}>
+          <ProgressBar 
+            $isAtLocation={distance !== null && distance <= 50}
+            $progressWidth={getProgressWidth()}
+          />
+        </ProgressBackground>
+      </ProgressContainer>
+    </LocationContainer>
   );
 };
 
 export default LocationDetector;
+
+const LocationContainer = styled.div`
+  padding: 1rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const LocationTitle = styled.h3`
+  font-size: 1.125rem;
+  font-weight: 500;
+`;
+
+const ErrorMessage = styled.div`
+  color: #ef4444;
+  margin-top: 0.5rem;
+`;
+
+const LocationInfo = styled.div`
+  margin-top: 0.5rem;
+`;
+
+const LocationCoords = styled.p`
+  font-size: 0.875rem;
+  color: #4b5563;
+`;
+
+const DistanceInfo = styled.p`
+  margin-top: 0.5rem;
+`;
+
+const LoadingMessage = styled.div`
+  color: #f59e0b;
+  margin-top: 0.5rem;
+`;
+
+const ProgressContainer = styled.div`
+  margin-top: 0.75rem;
+`;
+
+const ProgressBackground = styled.div`
+  height: 0.75rem;
+  width: 100%;
+  border-radius: 9999px;
+  background-color: ${props => props.watching ? '#bbf7d0' : '#e5e7eb'};
+`;
+
+const ProgressBar = styled.div`
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: ${props => props.isAtLocation ? '#22c55e' : '#3b82f6'};
+  width: ${props => props.progressWidth};
+`;

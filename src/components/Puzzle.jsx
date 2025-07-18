@@ -1,47 +1,121 @@
 import React from 'react';
+import styled from 'styled-components';
+
 
 const Puzzle = ({ puzzle, onSolve }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-      <h2 className="text-2xl font-bold mb-4">{puzzle.title}</h2>
+    <PuzzleContainer>
+      <PuzzleTitle>{puzzle.title}</PuzzleTitle>
       
-      <div className="prose max-w-none mb-6">
+      <ContentWrapper>
         <p>{puzzle.description}</p>
         
         {puzzle.imageUrl && (
-          <div className="my-4">
-            <img 
+          <ImageContainer>
+            <PuzzleImage 
               src={puzzle.imageUrl} 
-              alt={puzzle.title} 
-              className="mx-auto rounded-md max-h-80 object-contain"
+              alt={puzzle.title}
             />
-          </div>
+          </ImageContainer>
         )}
         
         {puzzle.hint && (
-          <div className="bg-yellow-50 p-3 rounded-md mt-4 border-l-4 border-yellow-400">
-            <h4 className="font-semibold text-yellow-800">Hint:</h4>
-            <p className="text-yellow-700">{puzzle.hint}</p>
-          </div>
+          <HintContainer>
+            <HintTitle>Hint:</HintTitle>
+            <HintText>{puzzle.hint}</HintText>
+          </HintContainer>
         )}
-      </div>
+      </ContentWrapper>
       
       {puzzle.type === 'location' ? (
-        <div className="mt-4">
-          <p className="text-center italic text-gray-600">
+        <LocationNote>
+          <LocationText>
             Navigate to the correct location to solve this puzzle!
-          </p>
-        </div>
+          </LocationText>
+        </LocationNote>
       ) : (
-        <button
-          onClick={onSolve}
-          className="w-full mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
-        >
-          I've Solved This Puzzle
-        </button>
+        <SolveButton onClick={onSolve}>
+          I&apos;ve Solved This Puzzle
+        </SolveButton>
       )}
-    </div>
+    </PuzzleContainer>
   );
 };
 
 export default Puzzle;
+
+const PuzzleContainer = styled.div`
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+const PuzzleTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+`;
+
+const ImageContainer = styled.div`
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const PuzzleImage = styled.img`
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.375rem;
+  max-height: 20rem;
+  object-fit: contain;
+`;
+
+const HintContainer = styled.div`
+  background-color: #fefce8;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  margin-top: 1rem;
+  border-left: 4px solid #facc15;
+`;
+
+const HintTitle = styled.h4`
+  font-weight: 600;
+  color: #854d0e;
+`;
+
+const HintText = styled.p`
+  color: #a16207;
+`;
+
+const LocationNote = styled.div`
+  margin-top: 1rem;
+`;
+
+const LocationText = styled.p`
+  text-align: center;
+  font-style: italic;
+  color: #4b5563;
+`;
+
+const SolveButton = styled.button`
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  border: none;
+  
+  &:hover {
+    background-color: #1d4ed8;
+  }
+`;
