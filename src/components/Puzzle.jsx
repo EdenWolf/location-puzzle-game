@@ -118,7 +118,7 @@ const Puzzle = ({ puzzle, onSolve }) => {
       {puzzle.type === 'location' && (
         <LocationNote>
           <LocationText>
-            Navigate to the marked location to solve this puzzle
+            בוא נצא לדרך!
           </LocationText>
         </LocationNote>
       )}

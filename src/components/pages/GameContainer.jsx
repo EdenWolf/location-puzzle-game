@@ -76,12 +76,6 @@ export default function GameContainer() {
 
   return (
     <PageContainer>
-      <Header>
-        <PageTitle>משחק חידות מבוסס מיקום</PageTitle>
-        <PageSubtitle>פתרו חידות על ידי מציאת מיקומים בעולם האמיתי!</PageSubtitle>
-      </Header>
-      
-      <MainContent>
         {gameComplete ? (
           <CompletionMessage>
             <CompletionTitle>ברכות!</CompletionTitle>
@@ -116,11 +110,6 @@ export default function GameContainer() {
             )}
           </>
         )}
-      </MainContent>
-      
-      <Footer>
-        <p>נבנה באמצעות Next.js ו-styled-components</p>
-      </Footer>
     </PageContainer>
   );
 }
@@ -132,36 +121,6 @@ const PageContainer = styled.div`
   @media (min-width: 640px) {
     padding: 1.5rem;
   }
-`;
-
-const Header = styled.header`
-  max-width: 42rem;
-  margin: 0 auto ${props => props.theme.spacing.xl} auto;
-`;
-
-const PageTitle = styled.h1`
-  font-size: ${props => props.theme.typography.fontSizes.heading};
-  font-weight: ${props => props.theme.typography.fontWeights.bold};
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing.sm};
-  color: ${props => props.theme.colors.text};
-  text-shadow: 0 2px 4px ${props => props.theme.colors.shadow};
-`;
-
-const PageSubtitle = styled.p`
-  color: ${props => props.theme.colors.textSecondary};
-  text-align: center;
-  font-size: ${props => props.theme.typography.fontSizes.subtitle};
-`;
-
-const MainContent = styled.main`
-  max-width: 42rem;
-  margin: 0 auto;
-  background-color: ${props => props.theme.colors.surface};
-  box-shadow: ${props => props.theme.shadows.large};
-  border-radius: ${props => props.theme.borderRadius.large};
-  padding: ${props => props.theme.spacing.lg};
-  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 const CompletionMessage = styled.div`
@@ -208,16 +167,4 @@ const ResetButton = styled.button`
   &:active {
     transform: translateY(0);
   }
-`;
-
-const Footer = styled.footer`
-  max-width: 42rem;
-  margin: ${props => props.theme.spacing.xl} auto 0 auto;
-  text-align: center;
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSizes.small};
-  padding-bottom: ${props => props.theme.spacing.md};
-  border-top: 1px solid ${props => props.theme.colors.border};
-  padding-top: ${props => props.theme.spacing.md};
-  margin-top: ${props => props.theme.spacing.xl};
 `;

@@ -9,8 +9,8 @@ export function generateStaticParams() {
 }
 
 // Server component with metadata
-export function generateMetadata({ params }) {
-  const { slug } = params;
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
   const puzzle = puzzles.find(p => p.slug === slug);
   
   return {
@@ -19,7 +19,7 @@ export function generateMetadata({ params }) {
 }
 
 // This is the server component - we just pass the slug to the client component
-export default function PuzzlePage({ params }) {
-  const { slug } = params;
+export default async function PuzzlePage({ params }) {
+  const { slug } = await params;
   return <PuzzleClient slug={slug} />;
 }
