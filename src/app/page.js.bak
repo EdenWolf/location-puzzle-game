@@ -1,0 +1,20 @@
+"use client";
+
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import puzzles from '../data/puzzles';
+
+export default function RootPage() {
+  const router = useRouter();
+  
+  useEffect(() => {
+    // Redirect to the first puzzle
+    router.replace(`/${puzzles[0].slug}`);
+  }, [router]);
+  
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p>Redirecting to puzzles...</p>
+    </div>
+  );
+}

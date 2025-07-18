@@ -1,15 +1,39 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import styled from 'styled-components';
-// Fix imports with correct paths
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import puzzles from '../data/puzzles';
-import LocationDetector from '../components/LocationDetector';
-import Puzzle from '../components/Puzzle';
-import GameProgress from '../components/GameProgress';
+import styled from 'styled-components';
 
-// Styled Components
+const LoadingContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9fafb;
+`;
+
+const LoadingText = styled.p`
+  font-size: 1.2rem;
+  color: #6b7280;
+`;
+
+export default function Home() {
+  const router = useRouter();
+  
+  useEffect(() => {
+    // Redirect to the first puzzle on the root page
+    router.replace(`/${puzzles[0].slug}`);
+  }, [router]);
+  
+  // Show a loading message while redirecting
+  return (
+    <LoadingContainer>
+      <LoadingText>Loading puzzle adventure...</LoadingText>
+    </LoadingContainer>
+  );
+}
+
 const PageContainer = styled.div`
   min-height: 100vh;
   background-color: #f9fafb;
@@ -88,113 +112,3 @@ const Footer = styled.footer`
   color: #6b7280;
   font-size: 0.875rem;
 `;
-
-export default function Home() {
-  const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(0);
-  const [currentLocation, setCurrentLocation] = useState(null);
-  const [gameComplete, setGameComplete] = useState(false);
-  const [lastCompletedTime, setLastCompletedTime] = useState(null);
-  
-  // Get current puzzle
-  const currentPuzzle = puzzles[currentPuzzleIndex];
-  
-  // Load game progress from localStorage on mount
-  useEffect(() => {
-    const savedProgress = localStorage.getItem('puzzleGameProgress');
-    if (savedProgress) {
-      const { currentIndex, completionTime } = JSON.parse(savedProgress);
-      setCurrentPuzzleIndex(currentIndex);
-      if (completionTime) {
-        setLastCompletedTime(new Date(completionTime));
-        setGameComplete(true);
-      }
-    }
-  }, []);
-  
-  // Save progress to localStorage when it changes
-  useEffect(() => {
-    const progressData = {
-      currentIndex: currentPuzzleIndex,
-      completionTime: lastCompletedTime ? lastCompletedTime.toISOString() : null
-    };
-    localStorage.setItem('puzzleGameProgress', JSON.stringify(progressData));
-  }, [currentPuzzleIndex, lastCompletedTime]);
-  
-  // Handle puzzle solve
-  const handlePuzzleSolved = () => {
-    if (currentPuzzleIndex < puzzles.length - 1) {
-      setCurrentPuzzleIndex(currentPuzzleIndex + 1);
-    } else {
-      setGameComplete(true);
-      setLastCompletedTime(new Date());
-    }
-  };
-  
-  // Handle location match
-  const handleLocationMatch = (location) => {
-    if (currentPuzzle.type === 'location') {
-      handlePuzzleSolved();
-    }
-  };
-  
-  // Handle location updates
-  const handleLocationUpdate = (location) => {
-    setCurrentLocation(location);
-  };
-  
-  // Handle game reset
-  const resetGame = () => {
-    setCurrentPuzzleIndex(0);
-    setGameComplete(false);
-    setLastCompletedTime(null);
-    localStorage.removeItem('puzzleGameProgress');
-  };
-
-  return (
-    <PageContainer>
-      <Header>
-        <PageTitle>Location Puzzle Game</PageTitle>
-        <PageSubtitle>Solve puzzles by finding real-world locations!</PageSubtitle>
-      </Header>
-      
-      <MainContent>
-        {gameComplete ? (
-          <CompletionMessage>
-            <CompletionTitle>Congratulations!</CompletionTitle>
-            <CompletionInfo>You&apos;ve completed all the puzzles!</CompletionInfo>
-            <CompletionDate>
-              Completed on: {lastCompletedTime?.toLocaleDateString()} at {lastCompletedTime?.toLocaleTimeString()}
-            </CompletionDate>
-            <ResetButton onClick={resetGame}>
-              Play Again
-            </ResetButton>
-          </CompletionMessage>
-        ) : (
-          <>
-            <GameProgress 
-              currentPuzzleIndex={currentPuzzleIndex} 
-              totalPuzzles={puzzles.length} 
-            />
-            
-            <Puzzle 
-              puzzle={currentPuzzle} 
-              onSolve={currentPuzzle.type === 'manual' ? handlePuzzleSolved : undefined} 
-            />
-            
-            {currentPuzzle.type === 'location' && (
-              <LocationDetector 
-                targetLocation={currentPuzzle.targetLocation} 
-                onLocationMatch={handleLocationMatch}
-                onLocationUpdate={handleLocationUpdate}
-              />
-            )}
-          </>
-        )}
-      </MainContent>
-      
-      <Footer>
-        <p>Created with Next.js</p>
-      </Footer>
-    </PageContainer>
-  );
-}

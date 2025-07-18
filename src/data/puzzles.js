@@ -4,6 +4,7 @@
 const puzzles = [
   {
     id: 1,
+    slug: "waterfront", // URL slug related to solution
     title: "First Clue",
     description: "Find the place where water meets the sky, where people gather to watch the sunset. Look for a bench facing west.",
     type: "location",
@@ -16,6 +17,7 @@ const puzzles = [
   },
   {
     id: 2,
+    slug: "message", // URL slug related to solution
     title: "The Hidden Message",
     description: "You've found the first location! Now look for a hidden message on the back of the bench.",
     type: "manual",
@@ -24,6 +26,7 @@ const puzzles = [
   },
   {
     id: 3,
+    slug: "library", // URL slug related to solution
     title: "Follow the Path",
     description: "The message leads you to a place where knowledge is kept. Find the building with stone lions guarding its entrance.",
     type: "location",
@@ -33,6 +36,14 @@ const puzzles = [
       name: "Public Library"
     }
   },
+  {
+    id: 4,
+    slug: "final", // URL slug for completion page
+    title: "Congratulations!",
+    description: "You've completed all the puzzles!",
+    type: "completion",
+    hint: "This is the end of your journey."
+  }
   // Add more puzzles as needed
 ];
 
