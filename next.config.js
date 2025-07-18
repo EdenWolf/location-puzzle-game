@@ -3,8 +3,8 @@ module.exports = {
   output: 'export',
   images: { unoptimized: true },
   // GitHub Pages configuration
-  basePath: '',
-  assetPrefix: './',
+  basePath: '/location-puzzle-game',
+  assetPrefix: '/location-puzzle-game/',
   // Ensures the application works on GitHub Pages
   trailingSlash: true
 }
