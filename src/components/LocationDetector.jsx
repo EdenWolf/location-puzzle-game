@@ -101,13 +101,13 @@ const ProgressBar = styled.div`
 const ActionButton = styled.button`
   margin-top: ${props => props.theme.spacing.md};
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  background-color: ${props => props.theme.colors.surfaceLight};
-  color: ${props => props.theme.colors.text};
+  background-color: #6200ee; /* Fixed primary color instead of theme variable */
+  color: white;
   font-weight: ${props => props.theme.typography.fontWeights.medium};
-  border: 1px solid ${props => props.theme.colors.border};
+  border: none;
   border-radius: ${props => props.theme.borderRadius.medium};
   cursor: pointer;
-  transition: all ${props => props.theme.transitions.short};
+  transition: transform ${props => props.theme.transitions.short};
   font-size: ${props => props.theme.typography.fontSizes.body};
   width: 100%;
   display: flex;
@@ -116,15 +116,13 @@ const ActionButton = styled.button`
   gap: ${props => props.theme.spacing.sm};
   
   &:hover {
-    background-color: ${props => props.theme.colors.primary};
-    color: white;
     transform: translateY(-2px);
     box-shadow: ${props => props.theme.shadows.small};
   }
   
-  &:active {
+  &:active, &:focus {
     transform: translateY(0);
-    background-color: ${props => props.theme.colors.primaryLight};
+    outline: none;
   }
   
   &:before {
