@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
+import { BASE_PATH } from '../utils/paths';
 
 const Puzzle = ({ puzzle, onSolve }) => {
   const [visibleElements, setVisibleElements] = useState(puzzle.elements.length > 3 ? 3 : puzzle.elements.length);

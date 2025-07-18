@@ -1,16 +1,3 @@
-// Helper function to get the correct image path for both development and production environments
-const getAssetPath = (path) => {
-  // Check if we're in a browser environment
-  if (typeof window !== 'undefined') {
-    // For GitHub Pages, the assets need to include the repository name in the path
-    if (window.location.hostname.includes('github.io')) {
-      return `/location-puzzle-game${path}`;
-    }
-  }
-  // For local development, just use the path as is
-  return path;
-};
-
 const puzzles = [
   {
     id: 1,
@@ -18,7 +5,7 @@ const puzzles = [
     title: "רמז ראשון",
     type: "location",
     elements: [
-      { type: "image", src: getAssetPath("/images/arthur-morgan.jpg"), alt: "ארתור מורגן" },
+      { type: "image", src: "/location-puzzle-game/images/arthur-morgan.jpg", alt: "ארתור מורגן" },
       { type: "text", content: "חופשי! אני סוף סוף חופשי!\nתודה לך, גראלט. בלעדיך לא הייתי יוצא משם בחיים.\n אבל אחרי כל כך הרבה זמן במערה, אני כל כך רעב...\nיש מנה אחת שחלמתי עליה כל הזמן הזה אבל אני לא מצליח לזכור איך קוראים לה: משהו עם ביצה רכה על לחמנייה מתוקה, עם רוטב טעים בצבע צהוב. איך קוראים לזה?\n" },
     ],
     targetLocation: {
@@ -35,7 +22,7 @@ const puzzles = [
     elements: [
       { type: "text", content: "מצאת את המיקום הראשון! שקיעת השמש מטילה צללים ארוכים על פני הפארק." },
       { type: "text", content: "בזמן שאתה יושב על הספסל, אתה מבחין בחריטה על גבי קורות העץ." },
-      { type: "image", src: getAssetPath("/images/bench-clue.jpg"), alt: "מסר נסתר על הספסל" },
+      { type: "image", src: "/location-puzzle-game/images/bench-clue.jpg", alt: "מסר נסתר על הספסל" },
       { type: "text", content: "המסר אומר: 'הידע ממתין במקום בו השומרים האבן צופים.'" },
       { type: "button", label: "המשך במסע", action: "next" }
     ]
@@ -64,7 +51,7 @@ const puzzles = [
     type: "manual",
     elements: [
       { type: "text", content: "הגעת לספרייה, שם אריות האבן שומרים על הכניסה." },
-      { type: "image", src: getAssetPath("/images/library-entrance.jpg"), alt: "כניסת הספרייה" },
+      { type: "image", src: "/location-puzzle-game/images/library-entrance.jpg", alt: "כניסת הספרייה" },
       { type: "text", content: "בפנים, אתה מוצא כתב יד עתיק החושף את ההיסטוריה הנסתרת של העיר." },
       { type: "text", content: "התעלומה נפתרה - גילית את הסוד המחבר את כל המקומות האלו." },
       { type: "solution", question: "איזה סוד מחבר בין כל הרמזים?", answer: "eggs benedict", placeholder: "הכנס את התשובה הנכונה" },
@@ -78,7 +65,7 @@ const puzzles = [
     type: "completion",
     elements: [
       { type: "text", content: "ברכות! סיימת את כל החידות וגילית את הסיפור הנסתר של העיר." },
-      { type: "image", src: getAssetPath("/images/completion.jpg"), alt: "תעודת סיום" },
+      { type: "image", src: "/location-puzzle-game/images/completion.jpg", alt: "תעודת סיום" },
       { type: "text", content: "המסע שלך דרך ההיסטוריה והתעלומה הסתיים." },
       { type: "button", label: "התחל מחדש", action: "reset" }
     ]
