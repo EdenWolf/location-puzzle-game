@@ -127,7 +127,7 @@ export default function GameContainer() {
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-color: ${props => props.theme.colors.background};
   padding: 1rem;
   @media (min-width: 640px) {
     padding: 1.5rem;
@@ -136,70 +136,88 @@ const PageContainer = styled.div`
 
 const Header = styled.header`
   max-width: 42rem;
-  margin: 0 auto 2rem auto;
+  margin: 0 auto ${props => props.theme.spacing.xl} auto;
 `;
 
 const PageTitle = styled.h1`
-  font-size: 1.875rem;
-  font-weight: 700;
+  font-size: ${props => props.theme.typography.fontSizes.heading};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: ${props => props.theme.spacing.sm};
+  color: ${props => props.theme.colors.text};
+  text-shadow: 0 2px 4px ${props => props.theme.colors.shadow};
 `;
 
 const PageSubtitle = styled.p`
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   text-align: center;
+  font-size: ${props => props.theme.typography.fontSizes.subtitle};
 `;
 
 const MainContent = styled.main`
   max-width: 42rem;
   margin: 0 auto;
-  background-color: white;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
+  background-color: ${props => props.theme.colors.surface};
+  box-shadow: ${props => props.theme.shadows.large};
+  border-radius: ${props => props.theme.borderRadius.large};
+  padding: ${props => props.theme.spacing.lg};
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 const CompletionMessage = styled.div`
   text-align: center;
-  padding: 3rem 0;
+  padding: ${props => props.theme.spacing.xl} 0;
+  color: ${props => props.theme.colors.text};
 `;
 
 const CompletionTitle = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+  font-size: ${props => props.theme.typography.fontSizes.title};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  margin-bottom: ${props => props.theme.spacing.md};
+  color: ${props => props.theme.colors.primary};
 `;
 
 const CompletionInfo = styled.p`
-  margin-bottom: 1.5rem;
+  margin-bottom: ${props => props.theme.spacing.lg};
+  font-size: ${props => props.theme.typography.fontSizes.subtitle};
 `;
 
 const CompletionDate = styled.p`
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 2rem;
+  font-size: ${props => props.theme.typography.fontSizes.small};
+  color: ${props => props.theme.colors.textSecondary};
+  margin-bottom: ${props => props.theme.spacing.xl};
 `;
 
 const ResetButton = styled.button`
-  padding: 0.75rem 1.5rem;
-  background-color: #2563eb;
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
+  background-color: ${props => props.theme.colors.primary};
   color: white;
-  font-weight: 600;
-  border-radius: 0.375rem;
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  border-radius: ${props => props.theme.borderRadius.medium};
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all ${props => props.theme.transitions.medium};
+  font-size: ${props => props.theme.typography.fontSizes.body};
   
   &:hover {
-    background-color: #1d4ed8;
+    background-color: ${props => props.theme.colors.primaryLight};
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.small};
+  }
+  
+  &:active {
+    transform: translateY(0);
   }
 `;
 
 const Footer = styled.footer`
   max-width: 42rem;
-  margin: 2rem auto 0 auto;
+  margin: ${props => props.theme.spacing.xl} auto 0 auto;
   text-align: center;
-  color: #6b7280;
-  font-size: 0.875rem;
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSizes.small};
+  padding-bottom: ${props => props.theme.spacing.md};
+  border-top: 1px solid ${props => props.theme.colors.border};
+  padding-top: ${props => props.theme.spacing.md};
+  margin-top: ${props => props.theme.spacing.xl};
 `;

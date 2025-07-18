@@ -2,56 +2,135 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const LocationContainer = styled.div`
-  padding: 1rem;
-  background-color: #f3f4f6;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  padding: ${props => props.theme.spacing.md};
+  background-color: ${props => props.theme.colors.surfaceLight};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  margin-bottom: ${props => props.theme.spacing.md};
+  border: 1px solid ${props => props.theme.colors.border};
+  box-shadow: ${props => props.theme.shadows.medium};
 `;
 
 const LocationTitle = styled.h3`
-  font-size: 1.125rem;
-  font-weight: 500;
+  font-size: ${props => props.theme.typography.fontSizes.subtitle};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.sm};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding-bottom: ${props => props.theme.spacing.xs};
 `;
 
 const ErrorMessage = styled.div`
-  color: #ef4444;
-  margin-top: 0.5rem;
+  color: ${props => props.theme.colors.error};
+  margin-top: ${props => props.theme.spacing.sm};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-left: 2px solid ${props => props.theme.colors.error};
 `;
 
 const LocationInfo = styled.div`
-  margin-top: 0.5rem;
+  margin-top: ${props => props.theme.spacing.sm};
+  color: ${props => props.theme.colors.text};
 `;
 
 const LocationCoords = styled.p`
-  font-size: 0.875rem;
-  color: #4b5563;
+  font-size: ${props => props.theme.typography.fontSizes.small};
+  color: ${props => props.theme.colors.textSecondary};
+  font-family: ${props => props.theme.typography.fontFamily};
+  background-color: ${props => props.theme.colors.surface};
+  padding: ${props => props.theme.spacing.xs};
+  border-radius: ${props => props.theme.borderRadius.small};
+  margin: ${props => props.theme.spacing.xs} 0;
 `;
 
 const DistanceInfo = styled.p`
-  margin-top: 0.5rem;
+  margin-top: ${props => props.theme.spacing.sm};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.body};
+  
+  strong {
+    color: ${props => props.theme.colors.secondary};
+    font-weight: ${props => props.theme.typography.fontWeights.medium};
+  }
 `;
 
 const LoadingMessage = styled.div`
-  color: #f59e0b;
-  margin-top: 0.5rem;
+  color: ${props => props.theme.colors.warning};
+  margin-top: ${props => props.theme.spacing.sm};
+  display: flex;
+  align-items: center;
+  
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid ${props => props.theme.colors.warning};
+    border-radius: 50%;
+    border-top-color: transparent;
+    margin-right: ${props => props.theme.spacing.sm};
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 `;
 
 const ProgressContainer = styled.div`
-  margin-top: 0.75rem;
+  margin-top: ${props => props.theme.spacing.md};
 `;
 
 const ProgressBackground = styled.div`
   height: 0.75rem;
   width: 100%;
   border-radius: 9999px;
-  background-color: ${props => props.watching ? '#bbf7d0' : '#e5e7eb'};
+  background-color: ${props => props.watching ? props.theme.colors.surfaceLight : props.theme.colors.surface};
+  border: 1px solid ${props => props.theme.colors.border};
+  overflow: hidden;
 `;
 
 const ProgressBar = styled.div`
   height: 0.75rem;
   border-radius: 9999px;
-  background-color: ${props => props.isAtLocation ? '#22c55e' : '#3b82f6'};
+  background-color: ${props => props.isAtLocation ? props.theme.colors.success : props.theme.colors.primary};
   width: ${props => props.progressWidth};
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 8px ${props => props.isAtLocation ? props.theme.colors.success : props.theme.colors.primary};
+`;
+
+const ActionButton = styled.button`
+  margin-top: ${props => props.theme.spacing.md};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  background-color: ${props => props.theme.colors.surfaceLight};
+  color: ${props => props.theme.colors.text};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.short};
+  font-size: ${props => props.theme.typography.fontSizes.body};
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${props => props.theme.spacing.sm};
+  
+  &:hover {
+    background-color: ${props => props.theme.colors.primary};
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.small};
+  }
+  
+  &:active {
+    transform: translateY(0);
+    background-color: ${props => props.theme.colors.primaryLight};
+  }
+  
+  &:before {
+    content: '📍';
+    font-size: 1.2em;
+  }
 `;
 
 const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate }) => {
@@ -59,6 +138,7 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
   const [error, setError] = useState(null);
   const [watching, setWatching] = useState(false);
   const [distance, setDistance] = useState(null);
+  const [watchId, setWatchId] = useState(null);
 
   // Function to calculate distance between two points using the Haversine formula
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -83,8 +163,13 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
       return;
     }
 
+    // Clear any existing watch
+    if (watchId) {
+      navigator.geolocation.clearWatch(watchId);
+    }
+
     setWatching(true);
-    const watchId = navigator.geolocation.watchPosition(
+    const id = navigator.geolocation.watchPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         const newLocation = { latitude, longitude };
@@ -126,17 +211,54 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
       }
     );
 
-    return () => {
+    setWatchId(id);
+    return id;
+  };
+
+  // Function to force location update
+  const recalculateLocation = () => {
+    // Stop current watching
+    if (watchId) {
       navigator.geolocation.clearWatch(watchId);
-      setWatching(false);
-    };
+      setWatchId(null);
+    }
+    
+    // Start a new watch with a fresh position request
+    setCurrentLocation(null); // Clear current location to show loading
+    const newWatchId = startWatching();
+    
+    // Also request a one-time position update for immediate feedback
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newLocation = { latitude, longitude };
+        setCurrentLocation(newLocation);
+        
+        if (targetLocation) {
+          const dist = calculateDistance(
+            latitude, 
+            longitude, 
+            targetLocation.latitude, 
+            targetLocation.longitude
+          );
+          setDistance(dist);
+        }
+      },
+      (err) => {
+        setError(`Error getting location: ${err.message}`);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   };
 
   useEffect(() => {
-    const cleanup = startWatching();
+    const id = startWatching();
     
     return () => {
-      if (cleanup) cleanup();
+      if (id) {
+        navigator.geolocation.clearWatch(id);
+        setWatching(false);
+      }
     };
   }, [targetLocation]); // Restart watching when target location changes
 
@@ -147,6 +269,17 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
       return `${percentage}%`;
     }
     return '0%';
+  };
+  
+  // Format distance for display (meters or kilometers)
+  const formatDistance = (meters) => {
+    if (meters === null) return '---';
+    
+    if (meters >= 1000) {
+      return `${(meters / 1000).toFixed(2)} km`;
+    } else {
+      return `${meters.toFixed(0)} meters`;
+    }
   };
 
   return (
@@ -169,7 +302,7 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
           
           {targetLocation && distance !== null && (
             <DistanceInfo>
-              Distance to target: <strong>{(distance).toFixed(0)} meters</strong>
+              Distance to target: <strong>{formatDistance(distance)}</strong>
             </DistanceInfo>
           )}
         </LocationInfo>
@@ -187,6 +320,10 @@ const LocationDetector = ({ targetLocation, onLocationMatch, onLocationUpdate })
           />
         </ProgressBackground>
       </ProgressContainer>
+      
+      <ActionButton onClick={recalculateLocation}>
+        Recalculate Location
+      </ActionButton>
     </LocationContainer>
   );
 };

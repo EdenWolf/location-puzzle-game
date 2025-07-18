@@ -1,39 +1,131 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import { useRouter } from 'next/navigation';
 
 const Puzzle = ({ puzzle, onSolve }) => {
+  const [visibleElements, setVisibleElements] = useState(puzzle.elements.length > 3 ? 3 : puzzle.elements.length);
+  const [solutionInput, setSolutionInput] = useState('');
+  const [solutionStatus, setSolutionStatus] = useState(null); // null, 'correct', 'incorrect'
+  const router = useRouter();
+
+  // Show more puzzle elements one by one
+  const revealMoreElements = () => {
+    if (visibleElements < puzzle.elements.length) {
+      setVisibleElements(prevCount => prevCount + 1);
+    }
+  };
+
+  // Handle solution submission
+  const checkSolution = (solutionElement) => {
+    if (solutionInput.toLowerCase() === solutionElement.answer.toLowerCase()) {
+      setSolutionStatus('correct');
+      // Wait a moment then solve the puzzle
+      setTimeout(() => {
+        if (onSolve) onSolve();
+      }, 1500);
+    } else {
+      setSolutionStatus('incorrect');
+      setTimeout(() => setSolutionStatus(null), 2000);
+    }
+  };
+
+  // Handle button actions
+  const handleButtonAction = (action) => {
+    if (action === 'next' && onSolve) {
+      onSolve();
+    } else if (action === 'reset') {
+      router.push(`/${puzzles[0].slug}`);
+    } else if (action === 'reveal') {
+      revealMoreElements();
+    }
+  };
+
+  // Render individual puzzle elements
+  const renderElement = (element, index) => {
+    switch (element.type) {
+      case 'text':
+        return <TextElement key={index}>{element.content}</TextElement>;
+      
+      case 'image':
+        return (
+          <ImageContainer key={index}>
+            <PuzzleImage src={element.src} alt={element.alt || 'Puzzle image'} />
+          </ImageContainer>
+        );
+      
+      case 'hint':
+        return (
+          <HintContainer key={index}>
+            <HintTitle>Hint</HintTitle>
+            <HintText>{element.content}</HintText>
+          </HintContainer>
+        );
+      
+      case 'solution':
+        return (
+          <SolutionContainer key={index} status={solutionStatus}>
+            <SolutionQuestion>{element.question}</SolutionQuestion>
+            <SolutionInput 
+              type="text"
+              value={solutionInput}
+              onChange={(e) => setSolutionInput(e.target.value)}
+              placeholder={element.placeholder || 'Enter solution'}
+              disabled={solutionStatus === 'correct'}
+            />
+            {solutionStatus === 'correct' && <SolutionFeedback>Correct! Well done!</SolutionFeedback>}
+            {solutionStatus === 'incorrect' && <SolutionFeedback error>Incorrect. Try again.</SolutionFeedback>}
+            <ActionButton 
+              onClick={() => checkSolution(element)} 
+              disabled={!solutionInput || solutionStatus === 'correct'}
+            >
+              Submit Answer
+            </ActionButton>
+          </SolutionContainer>
+        );
+      
+      case 'button':
+        return (
+          <ActionButtonContainer key={index}>
+            <ActionButton onClick={() => handleButtonAction(element.action)}>
+              {element.label}
+            </ActionButton>
+          </ActionButtonContainer>
+        );
+      
+      default:
+        return null;
+    }
+  };
+
   return (
     <PuzzleContainer>
       <PuzzleTitle>{puzzle.title}</PuzzleTitle>
       
       <ContentWrapper>
-        <p>{puzzle.description}</p>
-        
-        {puzzle.imageUrl && (
-          <ImageContainer>
-            <PuzzleImage 
-              src={puzzle.imageUrl} 
-              alt={puzzle.title}
-            />
-          </ImageContainer>
-        )}
-        
-        {puzzle.hint && (
-          <HintContainer>
-            <HintTitle>Hint:</HintTitle>
-            <HintText>{puzzle.hint}</HintText>
-          </HintContainer>
-        )}
+        {puzzle.elements.slice(0, visibleElements).map((element, index) => (
+          renderElement(element, index)
+        ))}
       </ContentWrapper>
       
-      {puzzle.type === 'location' ? (
+      {/* Show reveal more button if there are hidden elements */}
+      {visibleElements < puzzle.elements.length && (
+        <RevealButton onClick={revealMoreElements}>
+          Read More
+        </RevealButton>
+      )}
+      
+      {/* For location puzzles, show location message */}
+      {puzzle.type === 'location' && (
         <LocationNote>
           <LocationText>
-            Navigate to the correct location to solve this puzzle!
+            Navigate to the marked location to solve this puzzle
           </LocationText>
         </LocationNote>
-      ) : (
+      )}
+      
+      {/* For manual puzzles that don't have a solution element, show solve button */}
+      {puzzle.type === 'manual' && 
+       !puzzle.elements.some(el => el.type === 'solution' || el.type === 'button') && (
         <SolveButton onClick={onSolve}>
           I&apos;ve Solved This Puzzle
         </SolveButton>
@@ -42,80 +134,191 @@ const Puzzle = ({ puzzle, onSolve }) => {
   );
 };
 
-export default Puzzle;
-
+// Styled Components for dark theme
 const PuzzleContainer = styled.div`
-  background-color: white;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  background-color: ${props => props.theme.colors.surface};
+  box-shadow: ${props => props.theme.shadows.medium};
+  border-radius: ${props => props.theme.borderRadius.large};
+  padding: ${props => props.theme.spacing.lg};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  transition: transform ${props => props.theme.transitions.medium};
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
 `;
 
 const PuzzleTitle = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+  font-size: ${props => props.theme.typography.fontSizes.title};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  color: ${props => props.theme.colors.text};
+  border-bottom: 2px solid ${props => props.theme.colors.primary};
+  padding-bottom: ${props => props.theme.spacing.xs};
+  display: inline-block;
 `;
 
 const ContentWrapper = styled.div`
   max-width: 100%;
-  margin-bottom: 1.5rem;
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
+const TextElement = styled.p`
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.body};
+  line-height: 1.6;
+  margin-bottom: ${props => props.theme.spacing.md};
 `;
 
 const ImageContainer = styled.div`
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin: ${props => props.theme.spacing.md} 0;
+  border-radius: ${props => props.theme.borderRadius.medium};
+  overflow: hidden;
 `;
 
 const PuzzleImage = styled.img`
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 0.375rem;
+  width: 100%;
   max-height: 20rem;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: ${props => props.theme.borderRadius.medium};
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 const HintContainer = styled.div`
-  background-color: #fefce8;
-  padding: 0.75rem;
-  border-radius: 0.375rem;
-  margin-top: 1rem;
-  border-left: 4px solid #facc15;
+  background-color: ${props => props.theme.colors.surfaceLight};
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  margin: ${props => props.theme.spacing.md} 0;
+  border-left: 4px solid ${props => props.theme.colors.warning};
 `;
 
 const HintTitle = styled.h4`
-  font-weight: 600;
-  color: #854d0e;
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  color: ${props => props.theme.colors.warning};
+  margin-top: 0;
+  margin-bottom: ${props => props.theme.spacing.xs};
 `;
 
 const HintText = styled.p`
-  color: #a16207;
+  color: ${props => props.theme.colors.textSecondary};
+  margin: 0;
 `;
 
 const LocationNote = styled.div`
-  margin-top: 1rem;
+  margin-top: ${props => props.theme.spacing.md};
+  border-top: 1px solid ${props => props.theme.colors.border};
+  padding-top: ${props => props.theme.spacing.md};
 `;
 
 const LocationText = styled.p`
   text-align: center;
   font-style: italic;
-  color: #4b5563;
+  color: ${props => props.theme.colors.textSecondary};
 `;
 
 const SolveButton = styled.button`
   width: 100%;
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #2563eb;
+  margin-top: ${props => props.theme.spacing.md};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  background-color: ${props => props.theme.colors.primary};
   color: white;
-  font-weight: 600;
-  border-radius: 0.375rem;
-  transition: background-color 0.3s;
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  transition: background-color ${props => props.theme.transitions.short};
   cursor: pointer;
   border: none;
+  font-size: ${props => props.theme.typography.fontSizes.body};
   
   &:hover {
-    background-color: #1d4ed8;
+    background-color: ${props => props.theme.colors.primaryLight};
   }
 `;
+
+const RevealButton = styled.button`
+  background: none;
+  color: ${props => props.theme.colors.primary};
+  border: none;
+  font-size: ${props => props.theme.typography.fontSizes.body};
+  cursor: pointer;
+  padding: ${props => props.theme.spacing.sm};
+  margin: 0 auto;
+  display: block;
+  
+  &:hover {
+    color: ${props => props.theme.colors.primaryLight};
+    text-decoration: underline;
+  }
+`;
+
+const ActionButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: ${props => props.theme.spacing.md};
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+const ActionButton = styled.button`
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
+  background-color: ${props => props.disabled 
+    ? props.theme.colors.surfaceLight 
+    : props.theme.colors.primary};
+  color: ${props => props.disabled 
+    ? props.theme.colors.textHint 
+    : 'white'};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  border: none;
+  cursor: ${props => props.disabled ? 'default' : 'pointer'};
+  font-size: ${props => props.theme.typography.fontSizes.body};
+  transition: background-color ${props => props.theme.transitions.short}, 
+              transform ${props => props.theme.transitions.short};
+              
+  &:hover:not(:disabled) {
+    background-color: ${props => props.theme.colors.primaryLight};
+    transform: translateY(-2px);
+  }
+`;
+
+const SolutionContainer = styled.div`
+  background-color: ${props => props.theme.colors.surfaceLight};
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  margin-top: ${props => props.theme.spacing.md};
+  border: 1px solid ${props => {
+    if (props.status === 'correct') return props.theme.colors.success;
+    if (props.status === 'incorrect') return props.theme.colors.error;
+    return props.theme.colors.border;
+  }};
+`;
+
+const SolutionQuestion = styled.h4`
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  color: ${props => props.theme.colors.text};
+  margin-top: 0;
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+const SolutionInput = styled.input`
+  width: 100%;
+  padding: ${props => props.theme.spacing.sm};
+  background-color: ${props => props.theme.colors.surface};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.small};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.body};
+  margin-bottom: ${props => props.theme.spacing.md};
+  
+  &:focus {
+    border-color: ${props => props.theme.colors.primary};
+    outline: none;
+  }
+`;
+
+const SolutionFeedback = styled.div`
+  color: ${props => props.error ? props.theme.colors.error : props.theme.colors.success};
+  margin-bottom: ${props => props.theme.spacing.md};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  text-align: center;
+`;
+
+export default Puzzle;
