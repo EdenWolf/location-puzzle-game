@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Location-Based Puzzle Game
+
+A Next.js application that creates an interactive puzzle hunt game using geolocation. This game allows you to create a series of puzzles where players must physically visit specific locations to progress to the next challenge.
+
+## Features
+
+- Location detection using browser geolocation API
+- Progress tracking with local storage persistence
+- Both location-based puzzles and manual puzzles
+- Distance calculation to target locations
+- Mobile-friendly UI with Tailwind CSS
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (version 14.x or later)
+- npm or yarn
+- A modern browser with geolocation support
+- Mobile device for testing on location (recommended)
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Start the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Customizing Puzzles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Edit the `/src/data/puzzles.js` file to create your own puzzle hunt. Each puzzle should have the following structure:
 
-## Learn More
+```javascript
+{
+  id: 1, // Unique identifier
+  title: "Your Puzzle Title",
+  description: "A detailed description of the puzzle or clue",
+  type: "location", // 'location' or 'manual'
+  hint: "Optional hint to help users", // Optional
+  imageUrl: "/images/your-image.jpg", // Optional, place images in /public/images/
+  targetLocation: { // Only required for 'location' type puzzles
+    latitude: 12.345678,
+    longitude: 23.456789,
+    name: "Location Name" // Optional, for your reference
+  }
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Puzzle Types
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Location-based puzzles** (`type: "location"`) - Require the player to physically visit a specific location to proceed
+- **Manual puzzles** (`type: "manual"`) - Require the player to solve a puzzle and click a button when they have the answer
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment to GitHub Pages
 
-## Deploy on Vercel
+To deploy to GitHub Pages:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Install the `next-gh-pages` package:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm install --save-dev gh-pages
+```
+
+2. Add the following scripts to your `package.json`:
+
+```json
+"scripts": {
+  "build": "next build",
+  "export": "next export",
+  "deploy": "next build && next export && touch out/.nojekyll && gh-pages -d out -t true"
+}
+```
+
+3. Create a custom Next.js configuration file at the root of your project called `next.config.js`:
+
+```javascript
+module.exports = {
+  output: 'export',
+  basePath: process.env.NODE_ENV === 'production' ? '/location-puzzle-game' : '',
+  images: { unoptimized: true }
+}
+```
+
+4. Run the deploy command:
+
+```bash
+npm run deploy
+```
+
+## Testing on Mobile Devices
+
+When testing the location features, you'll need to use either:
+
+1. A real mobile device (recommended)
+2. Chrome's device emulation with custom geolocation settings
+
+Note that for security reasons, geolocation API only works on secure origins (HTTPS or localhost).
+
+## License
+
+This project is licensed under the MIT License.
