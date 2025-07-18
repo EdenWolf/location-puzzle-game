@@ -1,72 +1,25 @@
-'use client';
-
-import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import puzzles from '../../data/puzzles';
-import GameContainer from '../../components/pages/GameContainer';
-import styled from 'styled-components';
+import PuzzleClient from './puzzle-client';
 
-const ErrorContainer = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #f9fafb;
-  padding: 2rem;
-  text-align: center;
-`;
+// This function tells Next.js what static paths to generate during build
+export function generateStaticParams() {
+  return puzzles.map(puzzle => ({
+    slug: puzzle.slug,
+  }));
+}
 
-const ErrorTitle = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #ef4444;
-  margin-bottom: 1rem;
-`;
-
-const ErrorMessage = styled.p`
-  font-size: 1.1rem;
-  color: #6b7280;
-  margin-bottom: 2rem;
-`;
-
-const ReturnButton = styled.button`
-  padding: 0.75rem 1.5rem;
-  background-color: #2563eb;
-  color: white;
-  font-weight: 500;
-  border-radius: 0.375rem;
-  border: none;
-  cursor: pointer;
-  
-  &:hover {
-    background-color: #1d4ed8;
-  }
-`;
-
-export default function PuzzlePage() {
-  const params = useParams();
-  const router = useRouter();
+// Server component with metadata
+export function generateMetadata({ params }) {
   const { slug } = params;
+  const puzzle = puzzles.find(p => p.slug === slug);
   
-  // Validate if the slug exists in puzzles
-  const puzzleExists = puzzles.some(puzzle => puzzle.slug === slug);
-  
-  // If slug doesn't exist, show an error with a button to return to the first puzzle
-  if (!puzzleExists) {
-    return (
-      <ErrorContainer>
-        <ErrorTitle>Invalid Puzzle Key</ErrorTitle>
-        <ErrorMessage>
-          The puzzle key &quot;{slug}&quot; does not exist. Please return to the beginning of the adventure.
-        </ErrorMessage>
-        <ReturnButton onClick={() => router.push(`/${puzzles[0].slug}`)}>
-          Return to Start
-        </ReturnButton>
-      </ErrorContainer>
-    );
-  }
-  
-  // Render the GameContainer component which will handle the puzzle based on the URL slug
-  return <GameContainer />;
+  return {
+    title: puzzle ? `${puzzle.title} - Location Puzzle Game` : 'Puzzle Not Found',
+  };
+}
+
+// This is the server component - we just pass the slug to the client component
+export default function PuzzlePage({ params }) {
+  const { slug } = params;
+  return <PuzzleClient slug={slug} />;
 }
