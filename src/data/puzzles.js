@@ -58,6 +58,16 @@ const puzzles = [
       { type: "text", content: "הגיע הזמן לקצת מציאות מפוצלת" },
     ]
   },
+  {
+    id: 6,
+    slug: "food",
+    title: "בדבר אחד תאנוס צודק...",
+    type: "narrative",
+    elements: [
+      { type: "image", src: "/location-puzzle-game/images/thor.webp", alt: "תור" },
+      { type: "text", content: "גראלט, אני שונא להסכים עם תאנוס, אבל אם נרצה להביס אותו אנחנו צריכים שתהיה בשיא כוחך. כמו שרואים, אני מאמין שאסור להגיד לא לארוחה. בתאבון! ת׳ור." },
+    ]
+  },
 ];
 
 export default puzzles;
