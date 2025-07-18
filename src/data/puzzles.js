@@ -40,16 +40,12 @@ const puzzles = [
   },
   {
     id: 4,
-    slug: "final", // URL slug for completion page
-    title: "הגילוי הסופי",
-    type: "manual",
+    slug: "jin",
+    title: "נראה שאתה זקוק לאימון...",
+    type: "narrative",
     elements: [
-      { type: "text", content: "הגעת לספרייה, שם אריות האבן שומרים על הכניסה." },
-      { type: "image", src: "/location-puzzle-game/images/library-entrance.jpg", alt: "כניסת הספרייה" },
-      { type: "text", content: "בפנים, אתה מוצא כתב יד עתיק החושף את ההיסטוריה הנסתרת של העיר." },
-      { type: "text", content: "התעלומה נפתרה - גילית את הסוד המחבר את כל המקומות האלו." },
-      { type: "solution", question: "איזה סוד מחבר בין כל הרמזים?", answer: "eggs benedict", placeholder: "הכנס את התשובה הנכונה" },
-      { type: "hint", content: "חשוב על המנה שהדמות הזכירה." }
+      { type: "text", content: "גראלט, עכשיו כשהתחמשת אתה אולי חושב שאתה מוכן לקרב- אך אין זה נכון. כל לוחם דגול יודע שעליו להתאמן. אם אין לך חרב מתאימה לאימון, קח שלט. ג׳ין סאקאי." },
+      { type: "image", src: "/location-puzzle-game/images/jin-sakai.jpg", alt: "ג׳ין סאקאי" },
     ]
   },
   {
