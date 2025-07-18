@@ -53,8 +53,8 @@ export default function PuzzleClient({ slug }) {
     );
   }
   
-  // Render the GameContainer component with a key to force re-render on puzzle change
-  return <GameContainer key={key} />;
+  // Render the GameContainer component with explicit slug and key to force re-render
+  return <GameContainer key={key} forcedSlug={slug} />;
 }
 
 const ErrorContainer = styled.div`

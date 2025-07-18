@@ -9,27 +9,43 @@ import LocationDetector from '../LocationDetector';
 import Puzzle from '../Puzzle';
 import GameProgress from '../GameProgress';
 
-export default function GameContainer() {
+export default function GameContainer({ forcedSlug }) {
   const router = useRouter();
   const pathname = usePathname();
   
   const [currentLocation, setCurrentLocation] = useState(null);
   const [completionTime, setCompletionTime] = useState(null);
   
-  // Find current puzzle based on the URL path
+  // Find current puzzle based on the forcedSlug or URL path
   const getCurrentPuzzleFromPath = () => {
-    // Extract the slug from the path
-    const pathSegments = pathname.split('/');
-    const currentSlug = pathSegments[pathSegments.length - 1] || '';
+    // Use forcedSlug if available, otherwise extract from pathname
+    const currentSlug = forcedSlug || (() => {
+      const pathSegments = pathname.split('/');
+      return pathSegments[pathSegments.length - 1] || '';
+    })();
+    
+    console.log('GameContainer currentSlug:', currentSlug); // Debug log
     
     // Find the puzzle with matching slug, default to first puzzle if none found
     const puzzleIndex = puzzles.findIndex(puzzle => puzzle.slug === currentSlug);
     return puzzleIndex >= 0 ? puzzleIndex : 0;
   };
   
-  const currentPuzzleIndex = getCurrentPuzzleFromPath();
+  // Keep track of the current puzzle with state to ensure it updates
+  const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(getCurrentPuzzleFromPath());
   const currentPuzzle = puzzles[currentPuzzleIndex];
   const gameComplete = currentPuzzle?.type === 'completion';
+  
+  // React to forcedSlug changes
+  useEffect(() => {
+    if (forcedSlug) {
+      const index = puzzles.findIndex(p => p.slug === forcedSlug);
+      if (index >= 0) {
+        console.log('Updating puzzle to:', forcedSlug, 'index:', index);
+        setCurrentPuzzleIndex(index);
+      }
+    }
+  }, [forcedSlug]);
   
   useEffect(() => {
     // If no slug in URL (root path), redirect to the first puzzle

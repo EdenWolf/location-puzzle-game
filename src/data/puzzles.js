@@ -20,7 +20,7 @@ const puzzles = [
     title: "בתאבון!",
     type: "narrative", 
     elements: [
-      { type: "image", src: "/location-puzzle-game/images/cat-eggs.jpg", alt: "חתולים" },
+      { type: "image", src: "/location-puzzle-game/images/cat-eggs.png", alt: "חתולים" },
       { type: "button", label: "המשך במסע", action: "next" }
     ]
   },
